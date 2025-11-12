@@ -9,6 +9,8 @@ public class Zombie : MonoBehaviour
 
     private NavMeshAgent navAgent;
 
+    public bool isDead = false;
+
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -18,6 +20,11 @@ public class Zombie : MonoBehaviour
     public void TakeDamage(int damageAmount)
     {
         HP -= damageAmount;
+        if(isDead)
+        {
+            return;
+        }
+
         if (HP <= 0)
         {
 
@@ -25,13 +32,15 @@ public class Zombie : MonoBehaviour
 
             if(randomValue == 0)
             {
+
                 animator.SetTrigger("DIE1");
             } else
             {
+
                 animator.SetTrigger("DIE2");
             }
 
-
+           isDead = true;
         } else
         {
             animator.SetTrigger("DAMAGE");
