@@ -52,7 +52,7 @@ public class WaveController : MonoBehaviour
     private void SpawnWave()
     {
 
-     
+        
 
         for (int i = 0; i < zombiesPerWave; i++)
 
@@ -65,7 +65,7 @@ public class WaveController : MonoBehaviour
 
         }
      
-
+        SoundManager.Instance.PlayRoundStartSound();
 
     }
 
