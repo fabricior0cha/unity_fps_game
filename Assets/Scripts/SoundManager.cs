@@ -87,7 +87,9 @@ public class SoundManager : MonoBehaviour
     {
         if (playerHitDamage != null)
         {
-            playerChannel.PlayOneShot(playerHitDamage);
+            playerChannel.Stop();
+            playerChannel.clip = playerHitDamage;
+            playerChannel.Play();
         }
     }
 

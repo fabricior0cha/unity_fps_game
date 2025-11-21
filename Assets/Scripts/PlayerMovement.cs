@@ -18,6 +18,10 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 lastPosition = new Vector3(0f, 0f, 0f);
 
+    // Variáveis para o som de passo
+    private float footstepTimer = 0f;
+    public float footstepInterval = 0.5f; // Intervalo entre passos (ajustável no Inspector)
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -57,6 +61,25 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             isMoving = false;
+        }
+        
+        // Lógica do som de passo
+        if (isMoving && isGrounded)
+        {
+            footstepTimer += Time.deltaTime;
+            if (footstepTimer >= footstepInterval)
+            {
+                // Toca o som de passo
+                if (SoundManager.Instance != null)
+                {
+                    SoundManager.Instance.PlayFootstepSound();
+                }
+                footstepTimer = 0f; // Reseta o timer
+            }
+        }
+        else
+        {
+            footstepTimer = 0f; // Reseta o timer quando não está se movendo
         }
         
         lastPosition = gameObject.transform.position;

@@ -10,9 +10,19 @@ public class Player : MonoBehaviour
      if (HP <= 0)
      {
        print("Player is dead");
+       // Toca o som de morte do player
+       if (SoundManager.Instance != null)
+       {
+           SoundManager.Instance.PlayPlayerDeathSound();
+       }
         } else
         {
             print("Player took " + damage + " damage, remaining HP: " + HP);
+            // Toca o som de dano do player
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlayPlayerHitSound();
+            }
         }
     }
 
