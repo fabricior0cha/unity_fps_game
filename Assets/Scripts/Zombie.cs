@@ -39,8 +39,9 @@ public class Zombie : MonoBehaviour
 
                 animator.SetTrigger("DIE2");
             }
-
-           isDead = true;
+            ScoreController.Instance.AddScore(10);
+            navAgent.isStopped = true;
+            isDead = true;
         } else
         {
             animator.SetTrigger("DAMAGE");

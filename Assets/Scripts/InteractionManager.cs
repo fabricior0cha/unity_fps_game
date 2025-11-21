@@ -35,8 +35,16 @@ public class InteractionManager : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    WeaponManager.Instance.PickupWeapon(objectHitByRaycast.gameObject);
+                    if (ScoreController.Instance.score >= hoveredWeapon.weaponPrice )
+                    {
+                        ScoreController.Instance.RemoveScore(hoveredWeapon.weaponPrice);
+                        
+                        WeaponManager.Instance.BuyWeapon(objectHitByRaycast.gameObject);
+                    }
+                   
                 }
+
+               
 
             } else
             {
@@ -47,6 +55,8 @@ public class InteractionManager : MonoBehaviour
                 }
             }
 
+   
+
             //Ammo box
             if (objectHitByRaycast.GetComponent<AmmoBox>())
             {
@@ -54,10 +64,10 @@ public class InteractionManager : MonoBehaviour
                 hoveredAmmoBox.GetComponent<Outline>().enabled = true;
 
 
-                if (Input.GetKeyDown(KeyCode.F))
+                if (Input.GetKeyDown(KeyCode.F) && ScoreController.Instance.score >= 30)
                 {
-                    WeaponManager.Instance.PickupAmmo(hoveredAmmoBox);
-                    Destroy(hoveredAmmoBox.gameObject);
+                    WeaponManager.Instance.PickupTotalAmmo(100, 150);
+                    ScoreController.Instance.RemoveScore(30);
                 }
 
             }

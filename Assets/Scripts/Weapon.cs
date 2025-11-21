@@ -33,6 +33,7 @@ public class Weapon : MonoBehaviour
     public Vector3 spawnPosition;
     public Vector3 spawnRotation;
 
+    public int weaponPrice = 10;
     public enum WeaponModel
     {
         PistolM1911,

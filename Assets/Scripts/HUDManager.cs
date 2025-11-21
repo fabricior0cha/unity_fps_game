@@ -25,8 +25,11 @@ public class HUDManager : MonoBehaviour
     public TextMeshProUGUI tacticalAmountUI;
     public Sprite emptySlot;
 
+    [Header("Health")]
+    public TextMeshProUGUI healthUI;
 
-
+    [Header("Score")]
+    public TextMeshProUGUI scoreUI;
 
     private void Awake()
     {
@@ -69,6 +72,12 @@ public class HUDManager : MonoBehaviour
             activeWeaponUI.sprite= emptySlot;
             unActiveWeaponUI.sprite = emptySlot;
         }
+
+        // Update HP from Player Script
+        healthUI.text = $"Vida: {PlayerStats.Instance.health}";
+
+        // Update Score from ScoreController
+        scoreUI.text = $"{ScoreController.Instance.score}";
     }
 
     private Sprite GetWeaponSprite(Weapon.WeaponModel model)

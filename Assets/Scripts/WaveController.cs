@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WaveController : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class WaveController : MonoBehaviour
 
     public int currentWave = 0;
 
-    public int totalWaves = 3;
+    public int totalWaves = 1;
 
     public float delayBetweenWaves = 5f;
 
@@ -19,36 +21,65 @@ public class WaveController : MonoBehaviour
 
     public List<Zombie> zombies;
 
+    //Cooldown counter
+    public float cooldownCounter = 0f;
+
+    [Header("Text")]
+    public TextMeshProUGUI waveUI;
+    public TextMeshProUGUI currentWaveUI;
+    public TextMeshProUGUI winUI;
+
+    public RawImage winImage;
+
+
+
     void Start()
     {
-        SpawnWave();
+        StartNextWave();
+        cooldownCounter = delayBetweenWaves;
 
     }
 
     void Update()
     {
-        if(AllZombiesDead() && !isCooldown)
+
+        if(AllZombiesDead() && currentWave >= totalWaves)
         {
-            StartCoroutine(SpawnWaveWithCooldown());
+            waveUI.text = "Todas as waves completas!";
+            winUI.gameObject.SetActive(true);
+            winImage.gameObject.SetActive(true);
+            return;
         }
+
+        if (AllZombiesDead() && !isCooldown)
+        {
+            StartCoroutine(WaveCooldown());
+        }
+
+        if (isCooldown)
+        {
+            cooldownCounter -= Time.deltaTime;
+            waveUI.text = "Proxima wave em: " + Mathf.CeilToInt(cooldownCounter).ToString();
+        } else
+        {
+            cooldownCounter = delayBetweenWaves;
+            waveUI.text = "";
+        }
+
+
     }
 
-    private IEnumerator SpawnWaveWithCooldown()
+    private void StartNextWave()
     {
-
-        isCooldown = true;
-
-        yield return new WaitForSeconds(2f);
-
-        isCooldown = false;
-
-        zombiesPerWave = zombiesPerWave * 2;
         currentWave++;
-        zombies.Clear();
+        currentWaveUI.text = "Wave: " + currentWave.ToString();
 
         SpawnWave();
-
     }
+
+
+
+  
     private void SpawnWave()
     {
 
@@ -79,5 +110,30 @@ public class WaveController : MonoBehaviour
             }
         }
         return true;
+    }
+
+    private IEnumerator WaveCooldown()
+    {
+        isCooldown = true;
+        yield return new WaitForSeconds(delayBetweenWaves);
+        isCooldown = false;
+
+        List<Zombie> zombiesToRemove = new List<Zombie>();
+        foreach (var zombie in zombies)
+        {
+            if (zombie.isDead)
+            {
+                zombiesToRemove.Add(zombie);
+            }
+        }
+
+        foreach (var zombie in zombiesToRemove)
+        {
+            Destroy(zombie.gameObject);
+        }
+
+        zombies.Clear();
+        zombiesPerWave = zombiesPerWave * 2;
+        StartNextWave();
     }
 }

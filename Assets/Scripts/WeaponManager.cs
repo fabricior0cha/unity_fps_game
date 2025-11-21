@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static Weapon;
 
@@ -12,6 +13,8 @@ public class WeaponManager : MonoBehaviour
 
     public GameObject activeWeaponSlot;
 
+    public GameObject firstWeapon;
+
     [Header("Ammo")]
     public int totalRifleAmmo = 0;
     public int totalPistolAmmo = 0;
@@ -19,6 +22,13 @@ public class WeaponManager : MonoBehaviour
     private void Start()
     {
         activeWeaponSlot = weaponSlots[0];
+
+        // If there's a first weapon assigned, add it to the active slot at the start
+        if (firstWeapon != null)
+        {
+            totalPistolAmmo += firstWeapon.GetComponent<Weapon>().magazineSize * 5; // Give some starting ammo
+            AddWeaponIntoActiveSlot(firstWeapon);
+        }
     }
 
     private void Update()
@@ -59,6 +69,13 @@ public class WeaponManager : MonoBehaviour
     public void PickupWeapon(GameObject pickedupWeapon)
     {
         AddWeaponIntoActiveSlot(pickedupWeapon);
+    }
+
+    public void BuyWeapon(GameObject boughtWeapon)
+    {
+       //Change active slot to new 
+       SwitchActiveSlot(1);
+       AddWeaponIntoActiveSlot(boughtWeapon);
     }
 
     private void AddWeaponIntoActiveSlot(GameObject pickedupWeapon)
@@ -121,6 +138,12 @@ public class WeaponManager : MonoBehaviour
                 totalPistolAmmo += ammo.ammoAmount;
                 break;
         }
+    }
+
+    internal void PickupTotalAmmo(int pistolAmmount, int rifleAmmount)
+    {
+        totalPistolAmmo += pistolAmmount;
+        totalRifleAmmo += rifleAmmount;
     }
 
     internal void DecreaseTotalAmmo(int bulletsLeft, Weapon.WeaponModel thisWeaponModel)
