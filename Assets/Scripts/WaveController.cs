@@ -51,22 +51,20 @@ public class WaveController : MonoBehaviour
     }
     private void SpawnWave()
     {
-
-        
-
         for (int i = 0; i < zombiesPerWave; i++)
-
         {
             var spawnOffset = new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
             var spawnPosition = transform.position + spawnOffset;
             var spawned = Instantiate(zombiePrefab, spawnPosition, Quaternion.identity);
 
             zombies.Add(spawned.GetComponent<Zombie>());
-
         }
      
+        // Toca o grito de início de rodada
         SoundManager.Instance.PlayRoundStartSound();
-
+        
+        // Toca o som da horda em loop
+        SoundManager.Instance.PlayZombieHordeSound();
     }
 
     private bool AllZombiesDead()
@@ -78,6 +76,13 @@ public class WaveController : MonoBehaviour
                 return false;
             }
         }
+        
+        // Se todos os zumbis morreram, para o som da horda
+        if (zombies.Count > 0)
+        {
+            SoundManager.Instance.StopZombieHordeSound();
+        }
+        
         return true;
     }
 }

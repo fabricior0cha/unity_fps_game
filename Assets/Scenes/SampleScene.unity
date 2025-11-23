@@ -1765,6 +1765,7 @@ MonoBehaviour:
   emptyMagazine: {fileID: 850280669}
   playerChannel: {fileID: 934147818}
   zombieChannel: {fileID: 1269342074}
+  zombieDeathChannel: {fileID: 1745189569}
   ambientChannel: {fileID: 1023543491}
   M48Shot: {fileID: 8300000, guid: 9e51c70b75e576e44bf0fcef1d356020, type: 3}
   M1991Shot: {fileID: 8300000, guid: 00e5db68e665b7648ab715ebf83c4d12, type: 3}
@@ -1772,9 +1773,8 @@ MonoBehaviour:
   playerFootstep: {fileID: 8300000, guid: 6de0dedec9aa51a4c908a4930c921741, type: 3}
   playerDeath: {fileID: 8300000, guid: cfbb5689319a89844acef64db1a63e55, type: 3}
   zombieDeath: {fileID: 8300000, guid: bcd17ef1669374240b07f2a402b1748f, type: 3}
-  zombieHorde: {fileID: 0}
+  zombieHorde: {fileID: 8300000, guid: 7b56458ddd270bc488cd8fbed86c5245, type: 3}
   zombieRoundStart: {fileID: 8300000, guid: 4372de73edb93f043942263bb6c6a42b, type: 3}
-  zombieDeathVolume: 1
 --- !u!4 &850280668
 Transform:
   m_ObjectHideFlags: 0
@@ -4223,7 +4223,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 7bb7c4da20dcdb9478ef10b4caa7edf2, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -4316,7 +4316,7 @@ Transform:
   m_GameObject: {fileID: 1745189568}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.00703, y: 0.53973, z: 13.49354}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

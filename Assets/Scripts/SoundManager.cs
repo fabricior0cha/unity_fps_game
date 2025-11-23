@@ -11,7 +11,8 @@ public class SoundManager : MonoBehaviour
     public AudioSource reloadingSoundM1991;
     public AudioSource emptyMagazine;
     public AudioSource playerChannel; // Para sons do player (dano, morte, passos)
-    public AudioSource zombieChannel; // Para sons de zumbi (morte, horda, grito)
+    public AudioSource zombieChannel; // Para sons de zumbi (horda, grito)
+    public AudioSource zombieDeathChannel; // AudioSource dedicado para morte de zumbi
     public AudioSource ambientChannel; // Para sons ambientais (horda, início de rodada)
 
     // Sons de tiro
@@ -28,8 +29,6 @@ public class SoundManager : MonoBehaviour
     public AudioClip zombieHorde; // HORDA-ZUMBI.wav
     public AudioClip zombieRoundStart; // GRITO-ZUMBI-INICIO-RODADA.mp3
 
-    [Space]
-    [SerializeField, Range(0f, 1f)] private float zombieDeathVolume = 0.2f;
 
     private void Awake()
     {
@@ -123,39 +122,58 @@ public class SoundManager : MonoBehaviour
     /// </summary>
     public void PlayZombieDeathSound()
     {
-        if (zombieDeath != null)
+        if (zombieDeath == null)
         {
-            Debug.Log("Playing zombie death sound " + zombieDeath.name);
-            zombieChannel.PlayOneShot(zombieDeath, zombieDeathVolume);
+            Debug.LogWarning("SoundManager: zombieDeath AudioClip não está atribuído!");
+            return;
         }
+
+        if (zombieDeathChannel == null)
+        {
+            Debug.LogWarning("SoundManager: zombieDeathChannel AudioSource não está atribuído!");
+            return;
+        }
+
+        // Para qualquer som que esteja tocando no canal
+        zombieDeathChannel.Stop();
+        
+        // Define o clip e toca
+        zombieDeathChannel.clip = zombieDeath;
+        zombieDeathChannel.Play();
     }
 
     /// <summary>
-    /// Toca o som da horda de zumbis (pode ser usado em loop ou uma vez)
+    /// Toca o som da horda de zumbis em loop
     /// </summary>
-    public void PlayZombieHordeSound(bool loop = false)
+    public void PlayZombieHordeSound()
     {
-        if (zombieHorde != null)
+        if (zombieHorde == null)
         {
-            if (loop)
-            {
-                ambientChannel.clip = zombieHorde;
-                ambientChannel.loop = true;
-                ambientChannel.Play();
-            }
-            else
-            {
-                ambientChannel.PlayOneShot(zombieHorde);
-            }
+            Debug.LogWarning("SoundManager: zombieHorde AudioClip não está atribuído!");
+            return;
         }
+
+        if (ambientChannel == null)
+        {
+            Debug.LogWarning("SoundManager: ambientChannel AudioSource não está atribuído!");
+            return;
+        }
+
+        // Para qualquer som que esteja tocando no canal
+        ambientChannel.Stop();
+        
+        // Define o clip, ativa loop e toca
+        ambientChannel.clip = zombieHorde;
+        ambientChannel.loop = true;
+        ambientChannel.Play();
     }
 
     /// <summary>
-    /// Para o som da horda de zumbis (se estiver em loop)
+    /// Para o som da horda de zumbis
     /// </summary>
     public void StopZombieHordeSound()
     {
-        if (ambientChannel.isPlaying && ambientChannel.clip == zombieHorde)
+        if (ambientChannel != null && ambientChannel.isPlaying)
         {
             ambientChannel.Stop();
         }
