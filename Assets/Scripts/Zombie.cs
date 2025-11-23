@@ -40,6 +40,12 @@ public class Zombie : MonoBehaviour
                 animator.SetTrigger("DIE2");
             }
 
+           // Toca o som de morte do zumbi
+           if (SoundManager.Instance != null)
+           {
+               SoundManager.Instance.PlayZombieDeathSound();
+           }
+
            isDead = true;
         } else
         {

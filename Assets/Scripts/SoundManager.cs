@@ -28,6 +28,9 @@ public class SoundManager : MonoBehaviour
     public AudioClip zombieHorde; // HORDA-ZUMBI.wav
     public AudioClip zombieRoundStart; // GRITO-ZUMBI-INICIO-RODADA.mp3
 
+    [Space]
+    [SerializeField, Range(0f, 1f)] private float zombieDeathVolume = 0.2f;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -122,7 +125,8 @@ public class SoundManager : MonoBehaviour
     {
         if (zombieDeath != null)
         {
-            zombieChannel.PlayOneShot(zombieDeath);
+            Debug.Log("Playing zombie death sound " + zombieDeath.name);
+            zombieChannel.PlayOneShot(zombieDeath, zombieDeathVolume);
         }
     }
 
